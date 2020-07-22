@@ -1,6 +1,9 @@
 package _04_arrays_slices
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 func TestSum(t *testing.T) {
 	t.Run("soma coleção de n... números", func(t *testing.T) {
@@ -11,6 +14,15 @@ func TestSum(t *testing.T) {
 
 		if want != got {
 			t.Errorf(" queria '%d', obteve '%d', dados %v", want, got, numbers)
+		}
+	})
+
+	t.Run("soma n... coleções de n... números", func(t *testing.T) {
+		want := []int{6, 9}
+		got := SumAll([]int{1, 2, 3}, []int{0, 9})
+
+		if !reflect.DeepEqual(want, got) {
+			t.Errorf(" queria '%d', obteve '%d'", want, got)
 		}
 	})
 }
