@@ -1,4 +1,4 @@
-package inteiros
+package integers
 
 import (
 	"fmt"
