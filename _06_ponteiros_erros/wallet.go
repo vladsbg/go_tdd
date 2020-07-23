@@ -1,6 +1,11 @@
 package _06_ponteiros_erros
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
+
+var ErrorBalanceInsufficient = errors.New("Saldo indisponível")
 
 type Bitcoin int
 
@@ -20,6 +25,11 @@ func (w *Wallet) Balance() Bitcoin {
 	return w.balance
 }
 
-func (w *Wallet) Withdraw(value Bitcoin) {
+func (w *Wallet) Withdraw(value Bitcoin) error {
+	if value > w.balance {
+		return ErrorBalanceInsufficient
+
+	}
 	w.balance -= value
+	return nil
 }
