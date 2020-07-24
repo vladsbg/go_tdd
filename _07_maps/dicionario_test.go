@@ -1,4 +1,4 @@
-package _07_maps
+package maps
 
 import (
 	"testing"

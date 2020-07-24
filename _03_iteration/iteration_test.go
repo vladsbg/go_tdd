@@ -1,4 +1,4 @@
-package _03_iteration
+package iteration
 
 import (
 	"fmt"

@@ -1,4 +1,4 @@
-package _06_ponteiros_erros
+package ponteiros_erros
 
 import (
 	"testing"

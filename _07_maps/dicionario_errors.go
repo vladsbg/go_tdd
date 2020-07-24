@@ -1,4 +1,4 @@
-package _07_maps
+package maps
 
 const (
 	ErrorNotFound      = ErrorDictionary("Não foi possível encontrar a palavra no dicionário")
