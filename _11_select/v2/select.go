@@ -1,22 +1,35 @@
 package server_racer
 
 import (
+	"errors"
 	"net/http"
 	"time"
 )
 
-func Racer(a, b string) (winner string) {
-	durationA := measureResponseTime(a)
-	durationB := measureResponseTime(b)
+const tenSecondTimeout = time.Duration(10 * time.Second)
 
-	if durationA > durationB {
-		return b
-	}
-	return a
+var ErrorTimeout = errors.New("Tempo esgotado")
+
+func Racer(a, b string) (winner string, err error) {
+	return ConfigurableRacer(a, b, tenSecondTimeout)
 }
 
-func measureResponseTime(url string) time.Duration {
-	start := time.Now()
-	http.Get(url)
-	return time.Since(start)
+func ConfigurableRacer(a, b string, timeout time.Duration) (winner string, err error) {
+	select {
+	case <-ping(a):
+		return a, nil
+	case <-ping(b):
+		return b, nil
+	case <-time.After(timeout):
+		return "", ErrorTimeout
+	}
+}
+
+func ping(URL string) chan bool {
+	ch := make(chan bool)
+	go func() {
+		http.Get(URL)
+		ch <- true
+	}()
+	return ch
 }
