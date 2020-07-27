@@ -1,24 +1,25 @@
 package _14_context
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 )
 
+// Store busca dados
 type Store interface {
-	Fetch() string
+	Fetch(ctx context.Context) (string, error)
 }
 
-type StubStore struct {
-	response string
-}
-
-func (s *StubStore) Fetch() string {
-	return s.response
-}
-
+// Server retorna um handler para chamar a Store
 func Server(store Store) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, store.Fetch())
+		data, err := store.Fetch(r.Context())
+
+		if err != nil {
+			return // todo: registre o erro como você quiser
+		}
+
+		fmt.Fprint(w, data)
 	}
 }
